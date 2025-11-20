@@ -3,7 +3,9 @@ package com.healthhub.healthhub.controller;
 import com.healthhub.healthhub.model.Utilisateur;
 import com.healthhub.healthhub.service.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +18,12 @@ public class UtilisateurController {
 
     public UtilisateurController(UtilisateurService utilisateurService) {
         this.utilisateurService = utilisateurService;
+    }
+    @GetMapping("/me")
+    public ResponseEntity<Utilisateur> currentUser(Authentication authentication){
+        String email = authentication.getName();
+        Utilisateur user = utilisateurService.findByEmail(email);
+        return ResponseEntity.ok(user);
     }
     @GetMapping("/utilisateurs")
     @PreAuthorize("hasRole('ADMIN')")
