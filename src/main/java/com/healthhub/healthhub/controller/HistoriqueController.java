@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
@@ -27,12 +28,14 @@ public class HistoriqueController {
     // ============ CRUD de Base ============
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PATIENT') or hasRole('MEDCIN')")
     public ResponseEntity<HistoriqueDTO> getHistoriqueById(@PathVariable Long id) {
         Historique historique = historiqueService.getHistoriqueById(id);
         return ResponseEntity.ok(new HistoriqueDTO(historique));
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PATIENT') or hasRole('MEDCIN')")
     public ResponseEntity<List<HistoriqueDTO>> getAllHistorique() {
         List<HistoriqueDTO> historiques = historiqueService.getAllHistorique()
                 .stream()
@@ -42,12 +45,14 @@ public class HistoriqueController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PATIENT') or hasRole('MEDCIN')")
     public ResponseEntity<HistoriqueDTO> createHistorique(@RequestBody Historique historique) {
         Historique nouvelHistorique = historiqueService.AjouterHistorique(historique);
         return new ResponseEntity<>(new HistoriqueDTO(nouvelHistorique), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PATIENT') or hasRole('MEDCIN')")
     public ResponseEntity<HistoriqueDTO> updateHistorique(
             @PathVariable Long id,
             @RequestBody Historique historique) {
@@ -56,6 +61,7 @@ public class HistoriqueController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PATIENT') or hasRole('MEDCIN')")
     public ResponseEntity<String> deleteHistorique(@PathVariable Long id) {
         historiqueService.SupprimerHistoriqueById(id);
         return ResponseEntity.ok("Historique supprimé avec succès");
@@ -64,6 +70,7 @@ public class HistoriqueController {
     // ============ Endpoints Métier ============
 
     @GetMapping("/utilisateur/{utilisateurId}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PATIENT') or hasRole('MEDCIN')")
     public ResponseEntity<List<HistoriqueDTO>> getHistoriqueUtilisateur(
             @PathVariable Long utilisateurId) {
         List<HistoriqueDTO> historiques = historiqueService.getHistoriqueUtilisateur(utilisateurId)
@@ -75,6 +82,7 @@ public class HistoriqueController {
 
 
     @GetMapping("/utilisateur/{utilisateurId}/action/{actionType}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PATIENT') or hasRole('MEDCIN')")
     public ResponseEntity<List<HistoriqueDTO>> getHistoriqueParAction(
             @PathVariable Long utilisateurId,
             @PathVariable String actionType) {
@@ -87,6 +95,7 @@ public class HistoriqueController {
     }
 
     @GetMapping("/utilisateur/{utilisateurId}/periode")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PATIENT') or hasRole('MEDCIN')")
     public ResponseEntity<List<HistoriqueDTO>> getHistoriqueParPeriode(
             @PathVariable Long utilisateurId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant debut,
@@ -101,6 +110,7 @@ public class HistoriqueController {
 
 
     @GetMapping("/utilisateur/{utilisateurId}/dernieres")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PATIENT') or hasRole('MEDCIN')")
     public ResponseEntity<List<HistoriqueDTO>> getDernieresActions(
             @PathVariable Long utilisateurId,
             @RequestParam(defaultValue = "10") int limite) {
@@ -113,6 +123,7 @@ public class HistoriqueController {
     }
 
     @GetMapping("/utilisateur/{utilisateurId}/count")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PATIENT') or hasRole('MEDCIN')")
     public ResponseEntity<Map<String, Object>> compterActionsUtilisateur(
             @PathVariable Long utilisateurId) {
         long count = historiqueService.compterActionsUtilisateur(utilisateurId);
@@ -123,6 +134,7 @@ public class HistoriqueController {
     }
 
     @GetMapping("/utilisateur/{utilisateurId}/recent")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PATIENT') or hasRole('MEDCIN')")
     public ResponseEntity<List<HistoriqueDTO>> getHistoriqueRecent(
             @PathVariable Long utilisateurId) {
         Instant maintenant = Instant.now();
@@ -137,6 +149,7 @@ public class HistoriqueController {
     }
 
     @GetMapping("/utilisateur/{utilisateurId}/mois-courant")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PATIENT') or hasRole('MEDCIN')")
     public ResponseEntity<List<HistoriqueDTO>> getHistoriqueMoisCourant(
             @PathVariable Long utilisateurId) {
         Instant maintenant = Instant.now();
