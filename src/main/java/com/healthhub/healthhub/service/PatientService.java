@@ -30,4 +30,5 @@ public interface PatientService {
     Patient getPatientConnecte();
 
     Notification marquerNotificationCommeLue(Long patientId, Long notificationId);
+    String SupprimerNotification(Long patientId, Long notificationId);
 }

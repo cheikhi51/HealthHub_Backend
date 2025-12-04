@@ -6,6 +6,7 @@ import com.healthhub.healthhub.model.Patient;
 import com.healthhub.healthhub.model.Medecin;
 import com.healthhub.healthhub.model.RendezVous;
 import com.healthhub.healthhub.model.Notification;
+import com.healthhub.healthhub.service.NotificationService;
 import com.healthhub.healthhub.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ public class PatientController {
 
     @Autowired
     private PatientService patientService;
+    private NotificationService notificationService;
 
     // CRUD de base
     @PostMapping("/inscription")
@@ -123,5 +125,11 @@ public class PatientController {
             @PathVariable Long notificationId) {
         Notification notification = patientService.marquerNotificationCommeLue(patientId, notificationId);
         return ResponseEntity.ok(notification);
+    }
+    @DeleteMapping("/{patientId}/notifications/{notificationId}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PATIENT')")
+    public String deleteNotification(@PathVariable("patientId") Long patientId,@PathVariable("notificationId") Long notificationId){
+        patientService.SupprimerNotification(patientId,notificationId);
+        return "Notification supprimé avec succès";
     }
 }

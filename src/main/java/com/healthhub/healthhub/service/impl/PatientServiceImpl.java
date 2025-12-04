@@ -424,4 +424,22 @@ public class PatientServiceImpl implements PatientService {
 
         return notification;
     }
+
+    @Override
+    public String SupprimerNotification(Long patientId, Long notificationId) {
+        if (!patientRepository.existsById(patientId)) {
+            throw new ResourceNotFoundException("Patient avec l'ID " + patientId + " non trouvé");
+        }
+
+        Notification notification = notificationRepository.findById(notificationId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Notification avec l'ID " + notificationId + " non trouvée"
+                ));
+        if (!notification.getUtilisateurId().equals(patientId)) {
+            throw new UnauthorizedException("Cette notification ne vous appartient pas");
+        }else{
+            notificationRepository.deleteById(notificationId);
+            return "Suppression avec success";
+        }
+    }
 }
