@@ -28,14 +28,14 @@ public class HistoriqueController {
     // ============ CRUD de Base ============
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('PATIENT') or hasRole('MEDCIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HistoriqueDTO> getHistoriqueById(@PathVariable Long id) {
         Historique historique = historiqueService.getHistoriqueById(id);
         return ResponseEntity.ok(new HistoriqueDTO(historique));
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN') or hasRole('PATIENT') or hasRole('MEDCIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<HistoriqueDTO>> getAllHistorique() {
         List<HistoriqueDTO> historiques = historiqueService.getAllHistorique()
                 .stream()
@@ -45,14 +45,14 @@ public class HistoriqueController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN') or hasRole('PATIENT') or hasRole('MEDCIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HistoriqueDTO> createHistorique(@RequestBody Historique historique) {
         Historique nouvelHistorique = historiqueService.AjouterHistorique(historique);
         return new ResponseEntity<>(new HistoriqueDTO(nouvelHistorique), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('PATIENT') or hasRole('MEDCIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HistoriqueDTO> updateHistorique(
             @PathVariable Long id,
             @RequestBody Historique historique) {
@@ -61,7 +61,7 @@ public class HistoriqueController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('PATIENT') or hasRole('MEDCIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteHistorique(@PathVariable Long id) {
         historiqueService.SupprimerHistoriqueById(id);
         return ResponseEntity.ok("Historique supprimé avec succès");

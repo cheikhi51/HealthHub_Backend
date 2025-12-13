@@ -6,6 +6,7 @@ public class StatistiquesMedecinDTO {
     private Long nombreRendezVousConfirmes;
     private Long nombreRendezVousTermines;
     private Long nombreRendezVousAnnules;
+    private Long nombreRendezVousRefuses;
     private Long nombrePatientsUniques;
 
     public StatistiquesMedecinDTO() {
@@ -13,12 +14,13 @@ public class StatistiquesMedecinDTO {
 
     public StatistiquesMedecinDTO(Long nombreTotalRendezVous, Long nombreRendezVousEnAttente,
                                   Long nombreRendezVousConfirmes, Long nombreRendezVousTermines,
-                                  Long nombreRendezVousAnnules, Long nombrePatientsUniques) {
+                                  Long nombreRendezVousAnnules,Long nombreRendezVousRefuses, Long nombrePatientsUniques) {
         this.nombreTotalRendezVous = nombreTotalRendezVous;
         this.nombreRendezVousEnAttente = nombreRendezVousEnAttente;
         this.nombreRendezVousConfirmes = nombreRendezVousConfirmes;
         this.nombreRendezVousTermines = nombreRendezVousTermines;
         this.nombreRendezVousAnnules = nombreRendezVousAnnules;
+        this.nombreRendezVousRefuses = nombreRendezVousRefuses;
         this.nombrePatientsUniques = nombrePatientsUniques;
     }
 
@@ -65,6 +67,14 @@ public class StatistiquesMedecinDTO {
 
     public Long getNombrePatientsUniques() {
         return nombrePatientsUniques;
+    }
+
+    public Long getNombreRendezVousRefuses() {
+        return nombreRendezVousRefuses;
+    }
+
+    public void setNombreRendezVousRefuses(Long nombreRendezVousRefuses) {
+        this.nombreRendezVousRefuses = nombreRendezVousRefuses;
     }
 
     public void setNombrePatientsUniques(Long nombrePatientsUniques) {

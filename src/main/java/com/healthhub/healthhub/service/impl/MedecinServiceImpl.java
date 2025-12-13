@@ -290,6 +290,11 @@ public class MedecinServiceImpl implements MedecinService {
                 .count();
         stats.setNombreRendezVousAnnules(annules);
 
+        long refuses = tousRendezVous.stream()
+                        .filter(rdv -> rdv.getStatut() == StatutRdv.REFUSE)
+                        .count();
+        stats.setNombreRendezVousRefuses(refuses);
+
         stats.setNombrePatientsUniques((long) getMesPatients(medecinId).size());
 
         // 📝 Tracer la consultation des statistiques (optionnel)
