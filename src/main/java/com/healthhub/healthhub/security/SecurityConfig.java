@@ -49,16 +49,21 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        // Allow your frontend origin
-        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedOriginPatterns(List.of(
+                "http://localhost:*",           // Local development
+                "http://healthhub-frontend:*",  // Frontend service in Kubernetes
+                "http://*:31001",               // NodePort access
+                "http://*:80",                  // Ingress/nginx access
+                "http://127.0.0.1:*"
+        ));
 
         // Allow all HTTP methods
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "PATCH"));
 
         // Allow all headers
         configuration.setAllowedHeaders(List.of("*"));
 
-        // Allow credentials (important for JWT)
+        // Allow credentials - IMPORTANT for JWT
         configuration.setAllowCredentials(true);
 
         // Cache preflight response for 1 hour
